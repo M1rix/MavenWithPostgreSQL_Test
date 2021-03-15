@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyApp</title>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+<h1> Hello, World!</h1>
+<input type="text" id="data">
+<a id="post" href="#">POST</a>
+<a id="get" href="#">GET</a>
+
+<div id="container"></div>
+</body>
+
+<script>
+    $('#get').click(function (){
+        $.ajax({
+            type: "GET",
+            cache: false,
+            url: '/getRandomData',
+            data: "",
+            success: function (response) {
+                var html = "";
+                $.each(response.data, function(i)
+                {
+                    html = html+response.data[i] + "<br/>";
+                });
+                $('#container').html(html);
+        }
+    });
+});
+
+    $('#post').click(function (){
+        if (!$("#data").val()) {
+            alert("Enter your data!");
+        } else {
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: '/persist',
+                data: {
+                    'data': $("#data").val()
+                },
+                success: function (response) {
+                    $('#get').click();
+                }
+            });
+        }
+    });
+</script>
+</html>
